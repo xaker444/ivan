@@ -19,7 +19,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Заставляет видео занимать весь экран, сохраняя пропорции */
+            object-fit: cover; /* Видео на весь экран, сохраняя пропорции */
         }
         #warning {
             display: none;
@@ -31,19 +31,38 @@
             transform: translate(-50%, -50%);
             z-index: 10;
         }
+        #playButton {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            background-color: red;
+            color: white;
+            font-size: 2em;
+            padding: 20px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <div id="warning">Вы не можете покинуть этот сайт!</div>
 
+<!-- Кнопка запуска -->
+<button id="playButton">Запустить скример</button>
+
 <!-- Видеофайл для скримера -->
-<video id="screamer" autoplay>
+<video id="screamer" preload="auto">
     <source src="videoplayback.mp4" type="video/mp4">
     Ваш браузер не поддерживает видео тег.
 </video>
 
 <script>
+    const playButton = document.getElementById('playButton');
+    const video = document.getElementById('screamer');
+
     // Функция для входа в полноэкранный режим
     function openFullscreen() {
         if (document.documentElement.requestFullscreen) {
@@ -57,11 +76,13 @@
         }
     }
 
-    // Автоматическое включение полноэкранного режима при загрузке
-    window.onload = function() {
+    // Запуск видео по клику на кнопку
+    playButton.addEventListener('click', function() {
         openFullscreen();
-        document.getElementById('screamer').play();  // Запуск видео при загрузке страницы
-    };
+        video.play();  // Проигрываем видео
+        video.muted = false;  // Включаем звук
+        playButton.style.display = 'none';  // Скрываем кнопку после клика
+    });
 
     // Предупреждение при попытке закрыть страницу
     window.onbeforeunload = function() {
